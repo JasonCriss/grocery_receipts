@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  laravel:
+    build: ./laravel
+    depends_on:
+      - mysql
+    volumes:
+      - ./laravel/src:/var/www
+    ports:
+      - "8080:80"
+  mysql:
+    build: ./mysql
+    ports:
+      - "9906:3306"
