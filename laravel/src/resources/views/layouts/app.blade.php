@@ -47,7 +47,7 @@
                     {{--<a class="nav-link" href="/categories">Categories</a>--}}
                 {{--</li>--}}
                 <li class="nav-item">
-                    <a class="nav-link" href="/reports">Reports</a>
+                    <a class="nav-link" href="/reports">Graphs</a>
                 </li>
             </ul>
             <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">

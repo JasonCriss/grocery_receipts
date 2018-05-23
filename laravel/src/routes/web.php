@@ -28,6 +28,7 @@ Route::get('/reports/productsovertime', 'ReportController@productsovertime');
 Route::post('/reports/productsovertime', 'ReportController@productsovertime');
 Route::get('/reports/producttypeovertime', 'ReportController@producttypeovertime');
 Route::post('/reports/producttypeovertime', 'ReportController@producttypeovertime');
+Route::get('/reports/costsbymonth', 'ReportController@costsbymonth');
 Route::get('/reports/charts', 'ReportController@monthlycharts');
 
 Route::get('/categories','CategoryController@index');

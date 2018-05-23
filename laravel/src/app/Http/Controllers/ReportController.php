@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Receipt;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Charts\DashboardMonthlyChart;
@@ -124,7 +125,6 @@ class ReportController extends Controller
             $startmonth = intval(explode('-', min($dates))[1]);
             $endmonth = intval(explode('-', max($dates))[1]);
 
-            $time = collect([]);
             foreach ($items as $item) {
                 $item->year = explode('-', $item->receipt->transactiondate)[0];
                 $item->month = explode('-', $item->receipt->transactiondate)[1];
@@ -162,5 +162,45 @@ class ReportController extends Controller
             return view('reports.producttypeovertime')->with(compact(['producttypes']));
         }
 
+    }
+
+    public function costsbymonth(){
+        $receipts = Receipt::all();
+        $dates = $receipts->pluck('transactiondate')->toArray();
+        $startyear = intval(explode('-', min($dates))[0]);
+        $endyear = intval(explode('-', max($dates))[0]);
+        $startmonth = intval(explode('-', min($dates))[1]);
+        $endmonth = intval(explode('-', max($dates))[1]);
+
+        foreach ($receipts as $receipt) {
+            $receipt->year = explode('-',$receipt->transactiondate)[0];
+            $receipt->month = explode('-', $receipt->transactiondate)[1];
+        }
+
+        $time = collect([]);
+        for ($y = $startyear; $y <= $endyear; $y++) {
+            for ($m = 1; $m <= 12; $m++) {
+                if (!(($y == $startyear && $m < $startmonth) || ($y == $endyear && $m > $endmonth))) {
+                    $tmp = $receipts->where('year', $y)->where('month', $m);
+                    $year_month = new \stdClass();
+                    $year_month->title = $y . "-" . $m;
+                    $year_month->quantity = $tmp->sum('numitems');
+                    $year_month->cost = $tmp->sum('totalsales');
+                    $time->push($year_month);
+                }
+            }
+        }
+
+        $labels = $time->pluck('title');
+        $costs = $time->pluck('cost');
+        $quantity = $time->pluck('quantity');
+
+        $chart = new DashboardMonthlyChart();
+        $chart->labels($labels->toarray());
+        $chart->options(['title' => ['text' => 'Total Cost / Items by Month']]);
+        $chart->dataset('Cost', 'column', $costs->toarray());
+        $chart->dataset('Items', 'column', $quantity->toarray());
+
+        return view('reports.costsbymonth')->with(compact(['chart']));
     }
 }

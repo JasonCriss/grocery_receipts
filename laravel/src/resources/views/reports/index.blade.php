@@ -27,6 +27,18 @@
                     </div>
                 </a>
             </div>
+            <div class="col-md-4">
+                <a href="/reports/costsbymonth">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Costs By Month</h3>
+                        </div>
+                        <div class="panel-body">
+                            View total cost by month
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
 @endsection
