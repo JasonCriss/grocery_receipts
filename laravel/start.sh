@@ -10,7 +10,7 @@ cp /var/www/.env.example /var/www/.env
 fi
 
 # ----------------------------------------------------------------------
-# Run Composer
+# Run Composer & migrate & seed database
 # ----------------------------------------------------------------------
 
 if [[ ! -d "/var/www/vendor" ]];
@@ -18,7 +18,9 @@ then
 cd /var/www
 composer update
 composer dump-autoload -o
+php artisan migrate --seed
 fi
+
 
 # ----------------------------------------------------------------------
 # Start supervisord
