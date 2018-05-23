@@ -2,6 +2,7 @@ FROM nginx:mainline-alpine
 MAINTAINER Jason Criss <djc88@cornell.edu>
 
 COPY start.sh /start.sh
+COPY wait-for-it.sh /wait-for-it.sh
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY supervisord.conf /etc/supervisord.conf
 COPY site.conf /etc/nginx/sites-available/default.conf
@@ -60,4 +61,3 @@ sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" \
 EXPOSE 443 80
 WORKDIR /var/www
 
-CMD ["/start.sh"]

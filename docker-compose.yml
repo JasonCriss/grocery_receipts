@@ -5,16 +5,10 @@ services:
     build: ./mysql
     ports:
       - "9906:3306"
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 10s
-      retries: 5
   laravel:
     build: ./laravel
-    restart: on-failure
-    depends_on:
-      - mysql
     volumes:
       - ./laravel/src:/var/www
     ports:
       - "8080:80"
+    command: ["/wait-for-it.sh", "mysql:3306", "--", "/start.sh"]  
